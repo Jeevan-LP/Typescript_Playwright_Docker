@@ -1,0 +1,188 @@
+Docker:
+--------
+Docker is a platform used to create, package, and run applications in isolated containers.
+
+Virtualization:
+--------------
+Virtualization is the process of creating virtual computers or resources on a physical machine using hypervisor.
+
+Hard ware--> Host OS--> Hypervisor----------> VM1(Guest OS like Linux, apps)
+					|
+					|---> VM2(Guest OS like Window, apps)
+					|
+					|---> VM2(Guest OS like Mac OS, apps)
+
+
+Containerization:
+-----------------
+Containerization is the process of packaging an application with its dependencies and configuration into an isolated, lightweight container so it can run consistently across environments.
+
+Hard ware--> Host OS--> Container Engine----------> CONTAINER1(Application, files and libraries) 
+					      |
+					      |---> CONTAINER2(Application, files and libraries)
+					      |
+					      |---> CONTAINER3(Application, files and libraries)
+
+
+Difference between Virtualization and Containerization
+-----------------------------------------------------
+Virtualization             	| 	Containerization                                 
+------------------------------------------------------------------------------ 
+a. VM rubs on its own OS		a. Containers runs host OS
+b. Preallwocation of resource 		b. No preallwocation of resource
+c. Creates virtual machines   		c. Creates containers                               
+d. VM has a complete guest OS 		d. Container doesn't have a complete guest OS       
+e. More resource-intensive    		e. Lightweight                                      
+f. Usually slower to start    		f. Usually starts quickly                           
+Example: VirtualBox VM        		Example: Docker container                        
+VM can run a different OS  		Containers typically share the underlying kernel 
+
+Docker basic commands
+-------------------------------------------------------------------------------------------
+1. docker --version : Shows only the Docker version.
+2. docker version : Shows both Client and Server/Engine versions.
+3. docker -v : Shows the installed Docker version.
+4. docker info : Shows containers, images, storage driver, CPUs, memory, Docker root directory, etc.
+5. docker --help : Shows available Docker commands and their usage.
+6. docker login : Authenticates your Docker account so you can pull/push private images and push your images to a registry.
+
+Images commands
+----------------------------------------------------------------------------------------------------------------
+1. docker images ---listing images which are downloaded
+2. docker pull <<image name>> ---pull/download the images
+3. docker rmi <<image id>> ---remove the images
+4. docker build -t <image name> . : to create/build images
+5. docker run --rm <image name> : it will run and delete the container
+6. docker run <image name>: it will run without delete the container
+
+Container commands
+----------------------------------------------------------------------------------------------------------------
+1. docker ps : listing all running containersr
+2. docker run <<image name>> : create a container using image name(if image is exist). if image is not exist it will 
+pull the image and create the container
+3. docker start <<container id>> : start the container
+4. docker stop <<container id>> : stop the container
+5. docker rm <<container id/name>> : remove the container
+
+System commands
+----------------------------------------------------------------------------------------------------------------
+docker stats : display all images and container
+docker system df : display all images and container
+docker system prune -f : remove all containers
+----------------------------------------------------------------------------------------------------------------
+
+Push and Pull commands
+----------------------------------------------------------------------------------------------------------------
+a. Push
+1. docker login : Authenticates your Docker account so you can pull/push private images and push your images to a registry.
+2. docker tag <image name> <dockerhub-username>/<image name>:<tag>
+3. docker push <dockerhub-username>/<image name>:<tag>
+
+b. Pull
+1. docker pull <dockerhub-username>/<image name>:<tag>
+2. docker run <image name>
+
+Demo Dockerfile
+----------------------------------------------------------------------------------------------
+# FROM defines the base image for our Docker image. Here I'm using the official 
+Playwright 1.61.1 image, which provides Node.js, Playwright browsers, and their required dependencies.
+FROM mcr.microsoft.com/playwright:v1.61.1-noble
+
+# Creates/sets /app as the working directory inside the container.
+WORKDIR /app
+
+# Copies the two dependency files from your local project into /app inside the container.
+COPY package.json package-lock.json ./
+
+# RUN executes a command while building the Docker image. Here, npm ci installs the exact 
+Node.js dependencies defined in package-lock.json.
+RUN npm ci
+
+# Copies the remaining project files from your local project into /app.
+COPY . .
+
+# Creates an environment variable inside the Docker container.
+ENV ENV_NAME=QA
+
+# Default browser/project
+ENV BROWSER=chromium
+
+# CMD defines the default command that runs when the Docker container starts. 
+In my case, it executes the Playwright test suite."
+CMD ["npx", "playwright", "test"]
+
+----------------------------------------------------------------------------
+# Complete flow
+
+# FROM
+#   ↓
+# Get Playwright + Node.js + browsers
+#   ↓
+# WORKDIR
+#   ↓
+# Create/use /app
+#   ↓
+# COPY package.json + package-lock.json
+#   ↓
+# RUN npm ci
+#   ↓
+# Install project dependencies
+#   ↓
+# COPY . .
+#   ↓
+# Copy Playwright framework
+#   ↓
+# ENV ENV_NAME=QA
+#   ↓
+# Set QA environment
+#   ↓
+# ENV BROWSER=chromium
+#   ↓
+# Set Chromium as default browser
+#   ↓
+# CMD
+#   ↓
+# Run "npx playwright test"
+--------------------------------------------------------------------------------------------------
+
+Docker port mapping
+--------------------------------------------------------------------------------------------------
+We need port mapping when you want to access an application running inside a Docker container from outside 
+the container, such as from your browser or another application on your Windows machine.
+a. docker run -d nginx : need to pull nginx images
+b. docker run -d -p 80:80 nginx : create port number
+c. http://localhost/ : Open this URL
+--------------------------------------------------------------------------------------------------
+
+Docker volume
+--------------------------------------------------------------------------------------------------
+a. Named volume: A named volume is storage managed by Docker that is stored separately from the container and can persist even after the container is deleted. Use a named volume when you want Docker to manage persistent data.
+Commands:
+	1. docker volume create <volume name>: create a name volume 
+	2. docker volume ls : list all volume which are defined
+	3. docker volume inspect <volume name> : Show the detailed information
+	4. docker run --name <conatiner name> -v <volume name>:/app/data <image name>
+	5. docker volume rm <volume name> : it delete the volume. before we need to delete container
+b. Bind volume: A bind mount maps a specific folder or file from the host machine directly to a folder or file inside the container.Use a bind mount when you want the container to directly access files on your computer.
+b. tmpfs mount: A tmpfs mount stores temporary data in the host's memory (RAM) instead of persistent disk storage.
+--------------------------------------------------------------------------------------------------
+Docker vs VM
+Image vs Container
+Dockerfile
+FROM, COPY, RUN, CMD, ENTRYPOINT
+docker build
+docker run
+docker ps
+docker exec
+.dockerignore
+Port mapping
+Environment variables
+Docker + Playwright
+Headless vs headed execution
+Xvfb
+VNC/noVNC
+Docker + Jenkins
+Docker troubleshooting
+Docker reports/volumes
+localhost vs host.docker.internal
+Your actual Docker Playwright project explanation
