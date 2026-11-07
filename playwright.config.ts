@@ -20,16 +20,10 @@ export default defineConfig({
   workers:5,
 
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  //reporter:[['allure-playwright']],
-  reporter:[['allure-playwright', {resultsDir:'./report/allure-report'}]],
-  // reporter:[['html', {open:'always', outputFolder:'HTML-Report'}],//to create custom folder for html report
-  //           ['line'],
-  //           ['list'],
-  //           ['dot'],
-  //           ['junit', {outputFile:'JUNIT-Report/JUNIT-Report.xml'}],//to create custom folder for junit report
-  //           ['json', {outputFile:'JSON-Report/JSON-Report.json'}],//to create custom folder for json report
-  //           ['allure-playwright',{open:'on-failure'}]
-  //          ],
+reporter: [
+  ['list'],
+  ['allure-playwright', { resultsDir: 'allure-results' }]
+],
 
   testDir: './tests',
   outputDir:'./test-output',
