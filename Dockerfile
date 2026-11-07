@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Purpose: Contains instructions to build your Docker image.
 # What it does:
 # - Selects the Playwright base image.
@@ -9,6 +10,10 @@
 #===============================================================================================================
 # Only if there is a docker-compose.yml and docker-entrypoint.sh files
 #===============================================================================================================
+=======
+# FROM defines the base image for our Docker image. Here I'm using the official 
+#Playwright 1.61.1 image, which provides Node.js, Playwright browsers, and their required dependencies.
+>>>>>>> 93e243acefcab72cd9e9dd56d07f507cd40b6a13
 FROM mcr.microsoft.com/playwright:v1.61.1-noble
  
 # Working folder inside the container
