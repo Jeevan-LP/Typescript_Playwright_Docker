@@ -21,7 +21,7 @@ export default defineConfig({
 
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   //reporter:[['allure-playwright']],
-  //reporter:[['allure-playwright', {resultsDir:'./report/allure-report'}]],
+  reporter:[['allure-playwright', {resultsDir:'./report/allure-report'}]],
   // reporter:[['html', {open:'always', outputFolder:'HTML-Report'}],//to create custom folder for html report
   //           ['line'],
   //           ['list'],
@@ -33,6 +33,10 @@ export default defineConfig({
 
   testDir: './tests',
   outputDir:'./test-output',
+  /*reporter: [
+    ['html', { outputFolder: 'playwright-report', open: 'never' }],
+    ['list']
+  ],*/
   /* Run tests in files in parallel */
   //fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
