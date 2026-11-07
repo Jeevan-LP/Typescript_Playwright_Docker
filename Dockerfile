@@ -1,5 +1,5 @@
 # FROM defines the base image for our Docker image. Here I'm using the official 
-Playwright 1.61.1 image, which provides Node.js, Playwright browsers, and their required dependencies.
+#Playwright 1.61.1 image, which provides Node.js, Playwright browsers, and their required dependencies.
 FROM mcr.microsoft.com/playwright:v1.61.1-noble
 
 # Creates/sets /app as the working directory inside the container.
